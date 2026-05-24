@@ -703,9 +703,13 @@ JSON: {"recommended":"$X-$Y","hours":"X-Y hours","rationale":"2 sentences","nego
   }
 
   // ── Sidebar ───────────────────────────────────────────────────────────────
+  function closeSidebar() {
+    document.getElementById('upsmart-sidebar-frame')?.remove();
+  }
+
   function openSidebar() {
     const existing = document.getElementById('upsmart-sidebar-frame');
-    if (existing) { existing.remove(); return; }
+    if (existing) { closeSidebar(); return; }
 
     const frame = document.createElement('iframe');
     frame.id = 'upsmart-sidebar-frame';
@@ -717,6 +721,13 @@ JSON: {"recommended":"$X-$Y","hours":"X-Y hours","rationale":"2 sentences","nego
     `;
     document.body.appendChild(frame);
   }
+
+  window.addEventListener('message', (event) => {
+    if (event.data?.type !== 'UPSMART_CLOSE_SIDEBAR') return;
+    const frame = document.getElementById('upsmart-sidebar-frame');
+    if (!frame || event.source !== frame.contentWindow) return;
+    closeSidebar();
+  });
 
   // ── Toast ─────────────────────────────────────────────────────────────────
   function showToast(msg) {

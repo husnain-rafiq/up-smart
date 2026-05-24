@@ -137,8 +137,7 @@ $('search-input').addEventListener('input', (e) => {
 });
 
 $('close-btn').addEventListener('click', () => {
-  // Tell parent frame to close
-  window.parent.document.getElementById('upsmart-sidebar-frame')?.remove();
+  window.parent.postMessage({ type: 'UPSMART_CLOSE_SIDEBAR' }, '*');
 });
 
 $('clear-won').addEventListener('click', () => {
