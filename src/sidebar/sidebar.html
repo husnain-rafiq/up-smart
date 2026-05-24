@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>UpSmart Tracker</title>
+  <link rel="stylesheet" href="sidebar.css" />
+</head>
+<body>
+
+<div class="sidebar-header">
+  <div class="sidebar-logo">⚡ JOB TRACKER</div>
+  <button class="sidebar-close" id="close-btn">✕</button>
+</div>
+
+<div class="status-bar">
+  <div class="status-filter active" data-filter="all">All <span class="count" id="count-all">0</span></div>
+  <div class="status-filter" data-filter="saved">Saved <span class="count" id="count-saved">0</span></div>
+  <div class="status-filter" data-filter="applied">Applied <span class="count" id="count-applied">0</span></div>
+  <div class="status-filter" data-filter="interviewing">Interview <span class="count" id="count-interviewing">0</span></div>
+  <div class="status-filter" data-filter="won">Won <span class="count" id="count-won">0</span></div>
+</div>
+
+<div class="search-bar">
+  <input type="text" id="search-input" placeholder="Search tracked jobs..." />
+</div>
+
+<div class="job-list" id="job-list">
+  <div class="empty-state" id="empty-state">
+    <div class="empty-icon">📋</div>
+    <div class="empty-title">No jobs tracked yet</div>
+    <div class="empty-desc">Click "+ Track" on any Upwork job to add it here</div>
+  </div>
+</div>
+
+<div class="sidebar-footer">
+  <button class="footer-btn" id="clear-won">Clear Won</button>
+  <button class="footer-btn danger" id="clear-all">Clear All</button>
+</div>
+
+<script src="sidebar.js"></script>
+</body>
+</html>

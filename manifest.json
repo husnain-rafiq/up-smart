@@ -1,0 +1,51 @@
+{
+  "manifest_version": 3,
+  "name": "UpSmart",
+  "version": "1.0.0",
+  "description": "AI-powered Upwork job analyzer, scorer, and proposal generator",
+  "permissions": [
+    "storage",
+    "notifications",
+    "alarms",
+    "scripting",
+    "activeTab"
+  ],
+  "host_permissions": [
+    "https://www.upwork.com/*",
+    "https://api.openai.com/*"
+  ],
+  "background": {
+    "service_worker": "src/background/service-worker.js"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://www.upwork.com/nx/search/jobs*",
+        "https://www.upwork.com/nx/s/*/jobs*",
+        "https://www.upwork.com/nx/jobs*"
+      ],
+      "js": ["src/content/content.js"],
+      "css": ["src/content/content.css"],
+      "run_at": "document_idle"
+    }
+  ],
+  "action": {
+    "default_popup": "src/popup/popup.html",
+    "default_icon": {
+      "16": "public/icons/icon16.png",
+      "48": "public/icons/icon48.png",
+      "128": "public/icons/icon128.png"
+    }
+  },
+  "icons": {
+    "16": "public/icons/icon16.png",
+    "48": "public/icons/icon48.png",
+    "128": "public/icons/icon128.png"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["src/sidebar/sidebar.html", "src/sidebar/sidebar.css", "src/sidebar/sidebar.js"],
+      "matches": ["https://www.upwork.com/*"]
+    }
+  ]
+}

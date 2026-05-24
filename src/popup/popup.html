@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>UpSmart Settings</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500;600&display=swap');
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      width: 360px;
+      background: #0a0f1e;
+      color: #e2e8f0;
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      min-height: 480px;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #0f172a, #1e293b);
+      padding: 16px 20px 14px;
+      border-bottom: 1px solid #1e3a5f;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-family: 'Space Mono', monospace;
+      font-size: 18px;
+      font-weight: 700;
+      color: #34d399;
+      letter-spacing: 2px;
+    }
+
+    .logo span { color: #60a5fa; }
+
+    .version {
+      font-size: 10px;
+      color: #475569;
+      font-family: 'Space Mono', monospace;
+    }
+
+    .tabs {
+      display: flex;
+      background: #0d1526;
+      border-bottom: 1px solid #1e3a5f;
+    }
+
+    .tab {
+      flex: 1;
+      padding: 9px;
+      text-align: center;
+      cursor: pointer;
+      font-size: 11px;
+      font-weight: 600;
+      color: #475569;
+      transition: all 0.15s;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      font-family: 'Space Mono', monospace;
+      border: none;
+      background: none;
+    }
+
+    .tab.active {
+      color: #34d399;
+      border-bottom: 2px solid #34d399;
+      background: rgba(52,211,153,0.05);
+    }
+
+    .tab-panel { display: none; padding: 16px 20px; }
+    .tab-panel.active { display: block; }
+
+    .field { margin-bottom: 14px; }
+
+    label {
+      display: block;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: #64748b;
+      margin-bottom: 6px;
+      font-family: 'Space Mono', monospace;
+    }
+
+    input[type="text"],
+    input[type="password"],
+    textarea {
+      width: 100%;
+      background: #0f1f3d;
+      border: 1px solid #1e3a5f;
+      border-radius: 8px;
+      padding: 9px 12px;
+      color: #e2e8f0;
+      font-size: 12px;
+      font-family: 'Inter', sans-serif;
+      transition: border-color 0.15s;
+      outline: none;
+    }
+
+    input:focus, textarea:focus {
+      border-color: #34d399;
+      box-shadow: 0 0 0 2px rgba(52,211,153,0.1);
+    }
+
+    textarea { min-height: 80px; resize: vertical; line-height: 1.5; }
+
+    .toggle-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 0;
+      border-bottom: 1px solid #0f1f3d;
+    }
+
+    .toggle-row:last-child { border-bottom: none; }
+
+    .toggle-label { color: #94a3b8; font-size: 12px; }
+    .toggle-desc { color: #475569; font-size: 10px; margin-top: 2px; }
+
+    .toggle {
+      position: relative;
+      width: 40px;
+      height: 22px;
+      flex-shrink: 0;
+    }
+
+    .toggle input { opacity: 0; width: 0; height: 0; }
+
+    .toggle-slider {
+      position: absolute;
+      cursor: pointer;
+      inset: 0;
+      background: #1e3a5f;
+      border-radius: 22px;
+      transition: 0.2s;
+    }
+
+    .toggle-slider:before {
+      position: absolute;
+      content: "";
+      height: 16px;
+      width: 16px;
+      left: 3px;
+      bottom: 3px;
+      background: #475569;
+      border-radius: 50%;
+      transition: 0.2s;
+    }
+
+    input:checked + .toggle-slider { background: rgba(52,211,153,0.3); }
+    input:checked + .toggle-slider:before {
+      transform: translateX(18px);
+      background: #34d399;
+    }
+
+    .btn-primary {
+      width: 100%;
+      background: linear-gradient(135deg, #34d399, #059669);
+      color: #0a0f1e;
+      border: none;
+      border-radius: 8px;
+      padding: 11px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      font-family: 'Space Mono', monospace;
+      letter-spacing: 0.5px;
+      transition: opacity 0.15s;
+      margin-top: 4px;
+    }
+
+    .btn-primary:hover { opacity: 0.9; }
+
+    .btn-secondary {
+      background: #0f1f3d;
+      color: #60a5fa;
+      border: 1px solid #1e3a5f;
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: 12px;
+      cursor: pointer;
+      font-family: 'Space Mono', monospace;
+      transition: background 0.15s;
+    }
+
+    .btn-secondary:hover { background: #1e3a5f; }
+
+    .saved-msg {
+      color: #34d399;
+      font-size: 11px;
+      font-family: 'Space Mono', monospace;
+      text-align: center;
+      margin-top: 8px;
+      height: 16px;
+      transition: opacity 0.3s;
+    }
+
+    .hint {
+      color: #475569;
+      font-size: 10px;
+      margin-top: 5px;
+      line-height: 1.4;
+    }
+
+    .tag-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 8px;
+      min-height: 28px;
+    }
+
+    .tag {
+      background: #0f1f3d;
+      border: 1px solid #1e3a5f;
+      color: #94a3b8;
+      border-radius: 20px;
+      padding: 3px 10px;
+      font-size: 11px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .tag.keyword { border-color: #34d399; color: #34d399; }
+    .tag.blocked { border-color: #f87171; color: #f87171; }
+
+    .tag-remove {
+      cursor: pointer;
+      opacity: 0.5;
+      font-size: 12px;
+      line-height: 1;
+    }
+    .tag-remove:hover { opacity: 1; }
+
+    .input-row {
+      display: flex;
+      gap: 6px;
+    }
+
+    .input-row input { flex: 1; }
+
+    .add-btn {
+      background: #0f1f3d;
+      border: 1px solid #1e3a5f;
+      color: #34d399;
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: 18px;
+      line-height: 1;
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .add-btn:hover { background: #1e3a5f; }
+
+    .section-divider {
+      border: none;
+      border-top: 1px solid #0f1f3d;
+      margin: 14px 0;
+    }
+
+    .stat-row {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .stat-box {
+      flex: 1;
+      background: #0f1f3d;
+      border: 1px solid #1e3a5f;
+      border-radius: 8px;
+      padding: 10px;
+      text-align: center;
+    }
+
+    .stat-val {
+      font-size: 22px;
+      font-weight: 700;
+      color: #34d399;
+      font-family: 'Space Mono', monospace;
+    }
+
+    .stat-lbl {
+      font-size: 10px;
+      color: #475569;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-top: 2px;
+    }
+
+    .api-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      background: #0f1f3d;
+      border: 1px solid #1e3a5f;
+      margin-bottom: 10px;
+    }
+
+    .api-status.connected { border-color: #34d399; color: #34d399; }
+    .api-status.disconnected { border-color: #f87171; color: #f87171; }
+
+    .api-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+
+    .export-row { display: flex; gap: 8px; margin-top: 10px; }
+
+    .master-toggle {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+    }
+
+    .master-toggle-label {
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      font-family: 'Space Mono', monospace;
+      color: #64748b;
+      transition: color 0.15s;
+    }
+
+    .master-toggle-label.on { color: #34d399; }
+    .master-toggle-label.off { color: #f87171; }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo">UP<span>SMART</span></div>
+  <label class="master-toggle" title="Enable or disable UpSmart on Upwork">
+    <span class="master-toggle-label on" id="extension-status-label">ON</span>
+    <span class="toggle">
+      <input type="checkbox" id="extension_enabled" checked />
+      <span class="toggle-slider"></span>
+    </span>
+  </label>
+</div>
+
+<div class="tabs">
+  <button class="tab active" data-tab="setup">Setup</button>
+  <button class="tab" data-tab="filters">Filters</button>
+  <button class="tab" data-tab="features">Features</button>
+  <button class="tab" data-tab="about">About</button>
+</div>
+
+<!-- ── SETUP ── -->
+<div class="tab-panel active" id="tab-setup">
+
+  <div id="api-status-indicator" class="api-status disconnected">
+    <div class="api-dot"></div>
+    <span id="api-status-text">No API Key</span>
+  </div>
+
+  <div class="field">
+    <label>OpenAI API Key</label>
+    <input type="password" id="openai_api_key" placeholder="sk-..." autocomplete="off" />
+    <div class="hint">Your key is stored locally and sent only to OpenAI. Never shared.</div>
+  </div>
+
+  <div class="field">
+    <label>Your Freelancer Profile</label>
+    <textarea id="freelancer_profile" placeholder="e.g. Full-stack developer with 5 years exp in React, Node.js, PostgreSQL. Specializing in SaaS apps and dashboards."></textarea>
+    <div class="hint">AI uses this to score job relevance and write proposals.</div>
+  </div>
+
+  <div class="field">
+    <label>Min Score Filter (0 = off)</label>
+    <input type="text" id="min_score_filter" placeholder="e.g. 6 — dim jobs below this score" />
+  </div>
+
+  <button class="btn-primary" id="save-setup">Save Settings</button>
+  <div class="saved-msg" id="setup-saved"></div>
+
+</div>
+
+<!-- ── FILTERS ── -->
+<div class="tab-panel" id="tab-filters">
+
+  <div class="field">
+    <label>Target Keywords (boost / highlight)</label>
+    <div class="input-row">
+      <input type="text" id="kw-input" placeholder="e.g. React, Node.js..." />
+      <button class="add-btn" id="kw-add">+</button>
+    </div>
+    <div class="tag-list" id="kw-list"></div>
+    <div class="hint">Jobs containing these words get highlighted.</div>
+  </div>
+
+  <hr class="section-divider" />
+
+  <div class="field">
+    <label>Blocked Keywords (dim / hide)</label>
+    <div class="input-row">
+      <input type="text" id="block-input" placeholder="e.g. WordPress, logo design..." />
+      <button class="add-btn" id="block-add">+</button>
+    </div>
+    <div class="tag-list" id="block-list"></div>
+    <div class="hint">Jobs containing these words will be dimmed out.</div>
+  </div>
+
+  <button class="btn-primary" id="save-filters">Save Filters</button>
+  <div class="saved-msg" id="filters-saved"></div>
+
+</div>
+
+<!-- ── FEATURES ── -->
+<div class="tab-panel" id="tab-features">
+
+  <div class="toggle-row">
+    <div>
+      <div class="toggle-label">3-Column Layout</div>
+      <div class="toggle-desc">Show jobs in 3 columns for faster scanning</div>
+    </div>
+    <label class="toggle">
+      <input type="checkbox" id="three_col" checked />
+      <span class="toggle-slider"></span>
+    </label>
+  </div>
+
+  <div class="toggle-row">
+    <div>
+      <div class="toggle-label">Auto-Analyze Jobs</div>
+      <div class="toggle-desc">Score every job automatically on page load</div>
+    </div>
+    <label class="toggle">
+      <input type="checkbox" id="auto_analyze" />
+      <span class="toggle-slider"></span>
+    </label>
+  </div>
+
+  <div class="toggle-row">
+    <div>
+      <div class="toggle-label">Payment Verified Badge</div>
+      <div class="toggle-desc">Show verified/unverified status on each job</div>
+    </div>
+    <label class="toggle">
+      <input type="checkbox" id="show_verified_badge" checked />
+      <span class="toggle-slider"></span>
+    </label>
+  </div>
+
+  <div class="toggle-row">
+    <div>
+      <div class="toggle-label">Job Alerts</div>
+      <div class="toggle-desc">Chrome notifications for new matching jobs</div>
+    </div>
+    <label class="toggle">
+      <input type="checkbox" id="alerts_enabled" />
+      <span class="toggle-slider"></span>
+    </label>
+  </div>
+
+  <div class="field" style="margin-top:14px">
+    <label>Alert Interval (minutes)</label>
+    <input type="text" id="poll_interval" placeholder="15" />
+  </div>
+
+  <button class="btn-primary" id="save-features">Save Features</button>
+  <div class="saved-msg" id="features-saved"></div>
+
+</div>
+
+<!-- ── ABOUT ── -->
+<div class="tab-panel" id="tab-about">
+
+  <div class="stat-row">
+    <div class="stat-box">
+      <div class="stat-val" id="stat-apps">0</div>
+      <div class="stat-lbl">Tracked</div>
+    </div>
+    <div class="stat-box">
+      <div class="stat-val" id="stat-keywords">0</div>
+      <div class="stat-lbl">Keywords</div>
+    </div>
+  </div>
+
+  <div style="color:#64748b;font-size:12px;line-height:1.7;margin-bottom:16px">
+    <strong style="color:#94a3b8">UpSmart</strong> is your personal Upwork AI assistant.<br>
+    Powered by OpenAI gpt-4o-mini. Your API key stays on your device — never shared.
+  </div>
+
+  <div class="export-row">
+    <button class="btn-secondary" id="export-settings">Export Settings</button>
+    <button class="btn-secondary" id="import-settings">Import Settings</button>
+  </div>
+
+  <input type="file" id="import-file" accept=".json" style="display:none" />
+
+  <hr class="section-divider" />
+
+  <button class="btn-secondary" id="clear-all" style="width:100%;color:#f87171;border-color:#7f1d1d">
+    Clear All Data
+  </button>
+
+</div>
+
+<script src="popup.js"></script>
+</body>
+</html>
