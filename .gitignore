@@ -1,0 +1,62 @@
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Editor / IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.project
+.classpath
+.settings/
+
+# Cursor (local agent/cache artifacts)
+.cursor/
+
+# Secrets & local config (API keys are stored in chrome.storage, not files — ignore env backups)
+.env
+.env.*
+!.env.example
+*.local
+secrets.json
+credentials.json
+
+# Node (if you add a build step later)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.pnpm-store/
+
+# Build / packaging
+dist/
+build/
+out/
+*.crx
+*.pem
+*.zip
+web-ext-artifacts/
+
+# Logs & caches
+*.log
+.cache/
+.parcel-cache/
+.turbo/
+
+# Test / coverage
+coverage/
+.nyc_output/
+
+# Misc
+*.tmp
+*.temp
+.sass-cache/
