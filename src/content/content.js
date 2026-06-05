@@ -31,7 +31,6 @@
   function activateExtension() {
     injectToolbar();
     injectSidebarToggle();
-    applyLayout();
     processJobCards();
     observeDOM();
     console.log('[UpSmart] Initialized');
@@ -41,16 +40,17 @@
   function loadSettings() {
     return new Promise((resolve) => {
       chrome.storage.local.get([
-        'openai_api_key', 'freelancer_profile', 'keywords', 'blocked_keywords',
-        'three_col', 'auto_analyze', 'min_score_filter', 'show_verified_badge',
+        'openai_api_key', 'freelancer_profile', 'proposal_custom_instructions',
+        'keywords', 'blocked_keywords',
+        'auto_analyze', 'min_score_filter', 'show_verified_badge',
         'extension_enabled'
       ], (result) => {
         resolve({
           apiKey: result.openai_api_key || '',
           profile: result.freelancer_profile || '',
+          proposalInstructions: result.proposal_custom_instructions || '',
           keywords: result.keywords || [],
           blockedKeywords: result.blocked_keywords || [],
-          threeCol: result.three_col !== false,
           autoAnalyze: result.auto_analyze || false,
           minScoreFilter: result.min_score_filter || 0,
           showVerifiedBadge: result.show_verified_badge !== false,
@@ -69,7 +69,6 @@
     toolbar.innerHTML = `
       <span class="upsmart-logo">⚡ UPSMART</span>
       <span class="upsmart-sep">|</span>
-      <button id="us-btn-3col" class="${settings.threeCol ? 'active' : ''}">3-Col</button>
       <button id="us-btn-analyze-all">Analyze All</button>
       <button id="us-btn-clear">Clear Filters</button>
       <span class="upsmart-sep">|</span>
@@ -81,7 +80,6 @@
 
     document.body.insertBefore(toolbar, document.body.firstChild);
 
-    document.getElementById('us-btn-3col').addEventListener('click', toggleThreeCol);
     document.getElementById('us-btn-analyze-all').addEventListener('click', analyzeAllVisible);
     document.getElementById('us-btn-clear').addEventListener('click', clearFilters);
     document.getElementById('us-btn-filter').addEventListener('click', () => {
@@ -131,8 +129,6 @@
       tooltip = null;
     }
 
-    document.body.classList.remove('upsmart-3col');
-
     document.getElementById('upsmart-toolbar')?.remove();
     document.getElementById('upsmart-sidebar-toggle')?.remove();
     document.getElementById('upsmart-sidebar-frame')?.remove();
@@ -157,23 +153,6 @@
     btn.title = 'Open Job Tracker';
     btn.addEventListener('click', openSidebar);
     document.body.appendChild(btn);
-  }
-
-  // ── Layout ────────────────────────────────────────────────────────────────
-  function applyLayout() {
-    if (settings.threeCol) {
-      document.body.classList.add('upsmart-3col');
-    } else {
-      document.body.classList.remove('upsmart-3col');
-    }
-  }
-
-  function toggleThreeCol() {
-    settings.threeCol = !settings.threeCol;
-    chrome.storage.local.set({ three_col: settings.threeCol });
-    applyLayout();
-    const btn = document.getElementById('us-btn-3col');
-    if (btn) btn.classList.toggle('active', settings.threeCol);
   }
 
   // ── Job Card Parsing ──────────────────────────────────────────────────────
@@ -537,7 +516,7 @@ Profile: ${settings.profile || 'Experienced freelancer'}
 Job: ${job.title}
 Budget: ${job.budget}  
 Description: ${job.description?.slice(0, 600)}
-
+${settings.proposalInstructions ? `\nCustom Instructions (follow these closely):\n${settings.proposalInstructions}\n` : ''}
 Write only the proposal, no commentary.`,
 
       quote: `Estimate a project quote for this Upwork job. Respond ONLY with valid JSON, no markdown.
@@ -805,7 +784,6 @@ JSON: {"recommended":"$X-$Y","hours":"X-Y hours","rationale":"2 sentences","nego
     }
 
     settings = await loadSettings();
-    if (isEnabled) applyLayout();
   });
 
   // ── Start ─────────────────────────────────────────────────────────────────

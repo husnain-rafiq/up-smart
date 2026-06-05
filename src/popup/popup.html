@@ -381,6 +381,12 @@
   </div>
 
   <div class="field">
+    <label>Custom Proposal Instructions</label>
+    <textarea id="proposal_custom_instructions" placeholder="e.g. Keep a friendly tone, mention my GitHub portfolio, avoid buzzwords, always ask one clarifying question at the end."></textarea>
+    <div class="hint">Optional. AI follows these rules when writing proposals (tone, style, what to include).</div>
+  </div>
+
+  <div class="field">
     <label>Min Score Filter (0 = off)</label>
     <input type="text" id="min_score_filter" placeholder="e.g. 6 — dim jobs below this score" />
   </div>
@@ -422,17 +428,6 @@
 
 <!-- ── FEATURES ── -->
 <div class="tab-panel" id="tab-features">
-
-  <div class="toggle-row">
-    <div>
-      <div class="toggle-label">3-Column Layout</div>
-      <div class="toggle-desc">Show jobs in 3 columns for faster scanning</div>
-    </div>
-    <label class="toggle">
-      <input type="checkbox" id="three_col" checked />
-      <span class="toggle-slider"></span>
-    </label>
-  </div>
 
   <div class="toggle-row">
     <div>

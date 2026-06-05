@@ -16,6 +16,14 @@ async function getProfile() {
   });
 }
 
+async function getProposalInstructions() {
+  return new Promise((resolve) => {
+    chrome.storage.local.get(["proposal_custom_instructions"], (result) => {
+      resolve(result.proposal_custom_instructions || "");
+    });
+  });
+}
+
 export async function analyzeJob(jobData) {
   const apiKey = await getApiKey();
   if (!apiKey) throw new Error("No API key set. Please set your OpenAI key in UpSmart settings.");
@@ -78,6 +86,7 @@ export async function generateProposal(jobData) {
   if (!apiKey) throw new Error("No API key set.");
 
   const profile = await getProfile();
+  const customInstructions = await getProposalInstructions();
 
   const prompt = `You are an expert Upwork proposal writer. Write a compelling, personalized cover letter for this job.
 
@@ -94,7 +103,7 @@ Rules:
 - Be specific, not generic
 - End with a clear call to action
 - Sound human, not robotic
-
+${customInstructions ? `\nCustom Instructions (follow these closely):\n${customInstructions}\n` : ""}
 Write only the proposal text, no extra commentary.`;
 
   const response = await fetch(OPENAI_API_URL, {

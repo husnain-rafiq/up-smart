@@ -24,10 +24,6 @@ AI-powered Chrome extension for Upwork, powered by OpenAI GPT-4o-mini.
 
 ## ✨ Features
 
-### 📐 Layout
-- **3-Column Layout** — See 3x more jobs at once for faster scanning
-- Toggle on/off from the floating toolbar or popup settings
-
 ### 🎯 Filtering
 - **Keyword Filtering** — Add target keywords (React, Node.js etc.) to highlight matching jobs
 - **Blocked Keywords** — Add words to dim/hide irrelevant jobs (WordPress, logo, etc.)
@@ -69,7 +65,6 @@ AI-powered Chrome extension for Upwork, powered by OpenAI GPT-4o-mini.
 | Min Score Filter | Dim jobs below this score (0 = off) |
 | Keywords | Highlight matching jobs |
 | Blocked Keywords | Dim irrelevant jobs |
-| 3-Column Layout | Compact grid view |
 | Auto-Analyze | Score jobs automatically |
 | Payment Badge | Show verified status |
 | Alerts | Chrome notifications |
@@ -100,10 +95,6 @@ Using `gpt-4o-mini` (cheapest GPT-4 class model):
 → Try refreshing the page after installing
 **"No API key" error?**
 → Click the ⚡ icon → Setup tab → paste your OpenAI key → Save
-
-**Jobs not showing in 3-column?**
-→ Upwork's DOM changes sometimes. Toggle 3-col off and back on.
-→ The toolbar "3-Col" button should turn green when active.
 
 **AI not analyzing?**
 → Check your OpenAI key has credits at platform.openai.com/usage

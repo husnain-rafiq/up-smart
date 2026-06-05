@@ -1,18 +1,5 @@
 /* UpSmart Content Styles */
 
-/* ── 3-Column Layout ─────────────────────────────────────────────────────── */
-.upsmart-3col section[data-cy="job-feed"],
-.upsmart-3col .air3-card-list {
-  display: grid !important;
-  grid-template-columns: repeat(3, 1fr) !important;
-  gap: 12px !important;
-}
-
-.upsmart-3col .air3-card-list > article,
-.upsmart-3col [data-cy="job-tile-list"] > div {
-  width: 100% !important;
-}
-
 /* ── Dimmed Jobs ─────────────────────────────────────────────────────────── */
 .upsmart-dimmed {
   opacity: 0.3 !important;

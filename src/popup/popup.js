@@ -15,10 +15,10 @@ function loadAll() {
     // Setup
     $('openai_api_key').value = data.openai_api_key || '';
     $('freelancer_profile').value = data.freelancer_profile || '';
+    $('proposal_custom_instructions').value = data.proposal_custom_instructions || '';
     $('min_score_filter').value = data.min_score_filter || '';
 
     // Features
-    $('three_col').checked = data.three_col !== false;
     $('auto_analyze').checked = !!data.auto_analyze;
     $('show_verified_badge').checked = data.show_verified_badge !== false;
     $('alerts_enabled').checked = !!data.alerts_enabled;
@@ -71,11 +71,13 @@ $('extension_enabled').addEventListener('change', () => {
 $('save-setup').addEventListener('click', () => {
   const key = $('openai_api_key').value.trim();
   const profile = $('freelancer_profile').value.trim();
+  const proposalInstructions = $('proposal_custom_instructions').value.trim();
   const minScore = parseInt($('min_score_filter').value) || 0;
 
   chrome.storage.local.set({
     openai_api_key: key,
     freelancer_profile: profile,
+    proposal_custom_instructions: proposalInstructions,
     min_score_filter: minScore
   }, () => {
     updateApiStatus(key);
@@ -95,7 +97,6 @@ $('save-filters').addEventListener('click', () => {
 $('save-features').addEventListener('click', () => {
   const alertsEnabled = $('alerts_enabled').checked;
   chrome.storage.local.set({
-    three_col: $('three_col').checked,
     auto_analyze: $('auto_analyze').checked,
     show_verified_badge: $('show_verified_badge').checked,
     alerts_enabled: alertsEnabled,
