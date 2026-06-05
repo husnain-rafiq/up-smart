@@ -41,7 +41,7 @@
     return new Promise((resolve) => {
       chrome.storage.local.get([
         'openai_api_key', 'freelancer_profile', 'proposal_custom_instructions',
-        'keywords', 'blocked_keywords',
+        'quote_custom_instructions', 'keywords', 'blocked_keywords',
         'auto_analyze', 'min_score_filter', 'show_verified_badge',
         'extension_enabled'
       ], (result) => {
@@ -49,6 +49,7 @@
           apiKey: result.openai_api_key || '',
           profile: result.freelancer_profile || '',
           proposalInstructions: result.proposal_custom_instructions || '',
+          quoteInstructions: result.quote_custom_instructions || '',
           keywords: result.keywords || [],
           blockedKeywords: result.blocked_keywords || [],
           autoAnalyze: result.auto_analyze || false,
@@ -78,7 +79,8 @@
       <span id="upsmart-status">Ready</span>
     `;
 
-    document.body.insertBefore(toolbar, document.body.firstChild);
+    document.body.appendChild(toolbar);
+    document.body.classList.add('upsmart-has-toolbar');
 
     document.getElementById('us-btn-analyze-all').addEventListener('click', analyzeAllVisible);
     document.getElementById('us-btn-clear').addEventListener('click', clearFilters);
@@ -104,7 +106,8 @@
       <button id="us-btn-enable" class="active">Enable</button>
     `;
 
-    document.body.insertBefore(toolbar, document.body.firstChild);
+    document.body.appendChild(toolbar);
+    document.body.classList.add('upsmart-has-toolbar');
     document.getElementById('us-btn-enable').addEventListener('click', () => setExtensionEnabled(true));
   }
 
@@ -130,6 +133,7 @@
     }
 
     document.getElementById('upsmart-toolbar')?.remove();
+    document.body.classList.remove('upsmart-has-toolbar');
     document.getElementById('upsmart-sidebar-toggle')?.remove();
     document.getElementById('upsmart-sidebar-frame')?.remove();
 
@@ -525,7 +529,7 @@ Profile: ${settings.profile}
 Job: ${job.title}
 Budget: ${job.budget}
 Description: ${job.description?.slice(0, 500)}
-
+${settings.quoteInstructions ? `\nCustom Instructions (follow these closely):\n${settings.quoteInstructions}\n` : ''}
 JSON: {"recommended":"$X-$Y","hours":"X-Y hours","rationale":"2 sentences","negotiationTip":"1 tip"}`
     };
 

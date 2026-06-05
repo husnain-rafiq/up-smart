@@ -16,6 +16,7 @@ function loadAll() {
     $('openai_api_key').value = data.openai_api_key || '';
     $('freelancer_profile').value = data.freelancer_profile || '';
     $('proposal_custom_instructions').value = data.proposal_custom_instructions || '';
+    $('quote_custom_instructions').value = data.quote_custom_instructions || '';
     $('min_score_filter').value = data.min_score_filter || '';
 
     // Features
@@ -72,12 +73,14 @@ $('save-setup').addEventListener('click', () => {
   const key = $('openai_api_key').value.trim();
   const profile = $('freelancer_profile').value.trim();
   const proposalInstructions = $('proposal_custom_instructions').value.trim();
+  const quoteInstructions = $('quote_custom_instructions').value.trim();
   const minScore = parseInt($('min_score_filter').value) || 0;
 
   chrome.storage.local.set({
     openai_api_key: key,
     freelancer_profile: profile,
     proposal_custom_instructions: proposalInstructions,
+    quote_custom_instructions: quoteInstructions,
     min_score_filter: minScore
   }, () => {
     updateApiStatus(key);

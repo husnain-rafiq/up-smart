@@ -22,7 +22,8 @@
       "matches": [
         "https://www.upwork.com/nx/search/jobs*",
         "https://www.upwork.com/nx/s/*/jobs*",
-        "https://www.upwork.com/nx/jobs*"
+        "https://www.upwork.com/nx/jobs*",
+        "https://www.upwork.com/nx/find-work/*"
       ],
       "js": ["src/content/content.js"],
       "css": ["src/content/content.css"],

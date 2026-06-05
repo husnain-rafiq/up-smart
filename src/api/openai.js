@@ -24,6 +24,14 @@ async function getProposalInstructions() {
   });
 }
 
+async function getQuoteInstructions() {
+  return new Promise((resolve) => {
+    chrome.storage.local.get(["quote_custom_instructions"], (result) => {
+      resolve(result.quote_custom_instructions || "");
+    });
+  });
+}
+
 export async function analyzeJob(jobData) {
   const apiKey = await getApiKey();
   if (!apiKey) throw new Error("No API key set. Please set your OpenAI key in UpSmart settings.");
@@ -134,6 +142,7 @@ export async function estimateQuote(jobData) {
   if (!apiKey) throw new Error("No API key set.");
 
   const profile = await getProfile();
+  const customInstructions = await getQuoteInstructions();
 
   const prompt = `You are a freelance project estimator. Analyze this Upwork job and provide a quote estimate.
 
@@ -142,7 +151,7 @@ Freelancer Profile: ${profile}
 Job Title: ${jobData.title}
 Posted Budget: ${jobData.budget}
 Description: ${jobData.description}
-
+${customInstructions ? `\nCustom Instructions (follow these closely):\n${customInstructions}\n` : ""}
 Respond ONLY with valid JSON:
 {
   "recommended": "<$X - $Y or $X/hr>",
